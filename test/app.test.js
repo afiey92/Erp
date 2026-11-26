@@ -7,7 +7,7 @@ async function startServer() {
   const store = new Store(null);
   const app = createApp(store);
   const server = await new Promise((resolve) => {
-    const instance = app.listen(0, '127.0.0.1', () => resolve(instance));
+    const instance = app.listen(0, '0.0.0.0', () => resolve(instance));
   });
   const { port } = server.address();
   return {
