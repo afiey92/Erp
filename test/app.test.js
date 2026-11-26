@@ -103,7 +103,7 @@ test('creates customers and validates the email address', async () => {
 test('an order totals its lines and reduces stock', async () => {
   const app = await startServer();
   try {
-    const before = app.store.data.products.find((product) => product.sku === 'MEG-1002');
+    const beforeStock = app.store.data.products.find((product) => product.sku === 'MEG-1002').stock;
     const result = await post(`${app.url}/api/orders`, {
       customerId: 1,
       items: [
@@ -118,7 +118,7 @@ test('an order totals its lines and reduces stock', async () => {
     assert.equal(result.body.order.status, 'confirmed');
 
     const after = app.store.data.products.find((product) => product.sku === 'MEG-1002');
-    assert.equal(after.stock, before.stock - 5);
+    assert.equal(after.stock, beforeStock - 5);
 
     const summary = await (await fetch(`${app.url}/api/summary`)).json();
     assert.equal(summary.stats.orderCount, 1);
