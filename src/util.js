@@ -45,7 +45,8 @@ export function buildLines(store, rawItems, priceField) {
     if (qty === null || qty <= 0) throw httpError(400, 'Quantity must be a positive whole number.');
 
     const fallback = priceField === 'unitCost' ? product.cost : product.unitPrice;
-    const price = asNumber(raw?.[priceField] ?? fallback);
+    const rawPrice = raw?.[priceField];
+    const price = asNumber(rawPrice === undefined || rawPrice === null || rawPrice === '' ? fallback : rawPrice);
     if (price === null || price < 0) throw httpError(400, 'Price must be a number of zero or more.');
 
     return {
